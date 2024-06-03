@@ -1,9 +1,8 @@
-Template for the Read the Docs tutorial
+DCache installation tutorial
 =======================================
 
-This GitHub template includes fictional Python library
-with some basic Sphinx docs.
+This is a tutorial for the installation of dCache, written by D.Miceli
 
-Read the tutorial here:
+Tutorial has been written mking use of the template:
 
 https://docs.readthedocs.io/en/stable/tutorial/
