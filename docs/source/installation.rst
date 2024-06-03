@@ -1,6 +1,4 @@
-Installation
 
-=====
 
 .. _installation:
 
