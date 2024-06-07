@@ -18,7 +18,7 @@ First Checks
 ----------------
 Once logged in you should Disable selinux on all nodes by opening the /etc/selinux/config file and set the SELINUX mod to disabled.
 
-.. sourcecode:: bash
+.. code-block:: bash
 
    vi /etc/selinux/config
 
@@ -44,7 +44,7 @@ Download dCache
 ----------------
 Download dCache packages from website.
 
-.. prompt:: bash $
+.. code-block:: bash
 
    rpm -ivh https://www.dcache.org/old/downloads/1.9/repo/10.0/dcache-10.0.3-1.noarch.rpm
 
@@ -54,26 +54,26 @@ Set up PostGRESQL database and Zookeeper
 
 Update the system
 
-.. prompt:: bash $
+.. code-block:: bash
 
    dnf update -y
 
 Install PostgreSQL:
 
-.. prompt:: bash $
+.. code-block:: bash
 
    rpm -Uvh https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
    yum install -y postgresql14-server
 
 Initialize PostGreSQL Database
 
-.. prompt:: bash $
+.. code-block:: bash
 
    /usr/pgsql-14/bin/postgresql-14-setup initdb
 
 Allow local users to access PostgreSQL without requiring a password:
 
-.. prompt:: bash $
+.. code-block:: bash
 
    cat > /var/lib/pgsql/14/data/pg_hba.conf <<EOF
    # database on headnode
@@ -89,7 +89,7 @@ Allow local users to access PostgreSQL without requiring a password:
 
 Enable and start postgresql-14 service
 
-.. prompt:: bash $
+.. code-block:: bash
    
    systemctl enable postgresql-14 
    systemctl start postgresql-14
@@ -97,7 +97,7 @@ Enable and start postgresql-14 service
 
 Create postgreSQL users and databases
 
-.. prompt:: bash $
+.. code-block:: bash
    
    createuser -U postgres --no-superuser --no-createrole --createdb --no-password dcache
    createdb -U dcache chimera
@@ -109,7 +109,7 @@ If you want to run dCache without the zookeeper embedded you will need to follow
 
 Create zookeeper user and give root permissions
 
-.. prompt:: bash $
+.. code-block:: bash
    
    useradd -m zookeeper 
    passwd zookeeper. (new passwd is dcache_datacenter)
@@ -117,7 +117,7 @@ Create zookeeper user and give root permissions
 
 Download and prepare zookeeper: (install zookeeper in /opt)
 
-.. prompt:: bash $
+.. code-block:: bash
 
    cd /opt
    curl -O https://dlcdn.apache.org/zookeeper/zookeeper-3.8.4/apache-zookeeper-3.8.4-bin.tar.gz
@@ -129,7 +129,7 @@ Download and prepare zookeeper: (install zookeeper in /opt)
 
 Configure zookeeper:
 
-.. prompt:: bash $
+.. code-block:: bash
 
    sudo mkdir -p /data/zookeeper
    sudo chown zookeeper:zookeeper /data/zookeeper
@@ -139,7 +139,7 @@ Configure zookeeper:
 Write:
 
 
-.. prompt:: bash $
+.. code-block:: bash
 
    # measured in milliseconds. It is used to regulate heartbeats, and timeouts
    tickTime=2000
@@ -173,19 +173,19 @@ Write:
 
 Then:
 
-.. prompt:: bash $
+.. code-block:: bash
 
    cd /data/zookeeper
    vi myid
 
 Write the corresponding server ID:
 
-.. prompt:: bash $
+.. code-block:: bash
    1
 
 Start Zookeeper process:
 
-.. prompt:: bash $
+.. code-block:: bash
 
    cd /opt/zookeeper/bin
    ./zkServer.sh start /opt/zookeeper/conf/zookeeper.properties
