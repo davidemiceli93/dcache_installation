@@ -18,7 +18,7 @@ First Checks
 ----------------
 Once logged in you should Disable selinux on all nodes by opening the /etc/selinux/config file and set the SELINUX mod to disabled.
 
-.. prompt:: bash $
+.. sourcecode:: bash
 
    vi /etc/selinux/config
 
