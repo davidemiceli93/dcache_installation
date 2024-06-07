@@ -1,8 +1,8 @@
 
 
-.. _installation:
+.. _installation on Head Node:
 
-Installation
+Installation on Head Node
 ------------
 
 To use Lumache, first install it using pip:
