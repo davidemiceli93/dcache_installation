@@ -8,7 +8,9 @@ Installation on Head Node
 The entire procedure was performed logged in as user ``root``.
 
 We choose the following configuration: 
-.. toctree::
+
+.. code-block:: bash
+
    OS: Almalinux9
    DCache version: 10.0
    PostgreSQL v.14
