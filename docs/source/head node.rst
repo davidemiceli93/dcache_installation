@@ -22,7 +22,7 @@ Once logged in you should Disable selinux on all nodes by opening the /etc/selin
 
    vi /etc/selinux/config
 
-.. code-block:: console
+.. code-block:: bash
 
    #
    #    grubby --update-kernel ALL --remove-args selinux
@@ -36,7 +36,8 @@ Once logged in you should Disable selinux on all nodes by opening the /etc/selin
 
 Download prerequisites: 
 
-.. prompt:: bash 
+.. code-block:: bash 
+
    yum install java-11-openjdk-headless httpd-tools nfs-utils wget 
 
 Download dCache
