@@ -18,4 +18,5 @@ Contents
 
 .. toctree::
 
-   installation
+   head node
+   pool node
