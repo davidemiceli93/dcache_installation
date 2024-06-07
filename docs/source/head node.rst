@@ -199,6 +199,7 @@ Last command will open a shell interactive, try to type ‘ls /‘ and see if it
 
 Create dCache configuration
 ----------------
+
 For details please have a look here: https://www.dcache.org/manuals/Book-10.0/install.shtml#creating-a-minimal-dcache-configuration
 
 Update che dCache configuration file adding the layout to be used:
@@ -286,6 +287,73 @@ this will open the chimera command line.
 Authentication and generation of x509 certificates
 ----------------
 
+Now we will add to dCache the possiblity to authenticate using x509 certificates. In order to do that you will need the ``host`` certificate and key, the ``CA`` certificate and your own ``user`` certificate and key.
+
+In this example the ``host`` certificate and key was given in the ``sms`` Frascati machine, the ``user`` certificate and key are the one issued by INFN and the ``CA`` certificate can be found in the website of the corresponding CA.
+
+In order to make dCache recognize the host you should put the host key and certificate in the path ``/etc/grid-security`` and you have to change the permission settings:
+
+.. code-block:: bash
+
+   chown 644 hostcert.pem
+   chown 400 hostkey.pem
+
+Then, once you ahve the CA certificate you have to add it in the list of trusted CA which means, if your certificate is ``cacert.crt`` you need to:
+
+.. code-block:: bash
+
+   cp cacert.crt /etc/pki/ca-trust/source/anchors/
+   update-ca-trust
+
+Then, go in ``/etc/yum.repos.d`` and create the file ``EGI-trustanchors.repo`` with the following content:
+
+.. code-block:: bash
+   
+   cat > /etc/yum.repos.d/EGI-trustanchors.repo <<EOF
+   [EGI-trustanchors]
+   name=EGI-trustanchors
+   baseurl=http://repository.egi.eu/sw/production/cas/1/current/
+   gpgkey=http://repository.egi.eu/sw/production/cas/1/GPG-KEY-EUGridPMA-RPM-3
+   gpgcheck=1
+   enabled=1
+   EOF
+
+Then you populate the certificates folder in ``/etc/grid-security`` with:
+
+.. code-block:: bash
+
+   yum install ca-policy-egi-core
+
+Then:
+
+.. code-block:: bash
+
+   yum update
+   sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+   sudo yum clean all 
+   sudo yum makecache
+   yum install fetch-crl
+   fetch-crl
+
+The command ``fetch-crl`` should be repeated at least once per day.
+
+At this point you can upload your authentication settings in dCache and map the user to the username tester:
+
+.. code-block:: bash
+
+   cat > /etc/dcache/gplazma.conf <<EOF
+   auth    optional  htpasswd
+   auth    optional  x509
+   map     optional  multimap
+   session requisite authzdb
+   EOF
+
+   cat > /etc/dcache/multi-mapfile <<EOF
+
+   "dn:/DC=org/DC=terena/DC=tcs/C=IT/O=Istituto Nazionale di Fisica Nucleare/CN=Davide Miceli miceli@infn.it" username:tester uid:1000 gid:1000,true
+
+   username:tester uid:1000 gid:1000
+   username:admin uid:0 gid:0,true
 To use Lumache, first install it using pip:
 
 .. code-block:: console
