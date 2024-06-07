@@ -36,8 +36,7 @@ Once logged in you should Disable selinux on all nodes by opening the /etc/selin
 
 Download prerequisites: 
 
-.. prompt:: bash $
-
+.. prompt:: bash 
    yum install java-11-openjdk-headless httpd-tools nfs-utils wget 
 
 Download dCache
