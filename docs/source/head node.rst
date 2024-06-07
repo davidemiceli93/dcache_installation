@@ -181,6 +181,7 @@ Then:
 Write the corresponding server ID:
 
 .. code-block:: bash
+
    1
 
 Start Zookeeper process:
@@ -202,17 +203,83 @@ Update che dCache configuration file adding the layout to be used:
 
 .. code-block:: bash
 
-   vi /etc/dcache/dcache.conf
+   touch /etc/dcache/dcache.conf
+   cat > /etc/dcache/dcache.conf <<EOF
+   dcache.layout = mylayout 
+   dcache.systemd.strict=false
+   EOF
 
-Add the following lines:
+Create the corresponding layout file in the standard dCache directory and fill it with your required dCache configuration:
 
 .. code-block:: bash
 
-   dcache.layout = mylayout 
-   dcache.systemd.strict=false
+   touch /etc/dcache/layouts/mylayout.conf
+   cat > /etc/dcache/layouts/mylayout.conf <<EOF
+   <your configuration>
+   EOF
 
+Update the database:
 
+.. code-block:: bash
+   
+   dcache database update
 
+Now you have to set up the configuration of the authentication handled by ``gplazma``. Now we set up a configuration which enable the autentication via username-password and we give the corresponding permissions to the created users.
+First, we create the configuration file for ``gplazma``:
+
+.. code-block:: bash
+   
+   cat > /etc/dcache/gplazma.conf <<EOF
+   auth    optional  htpasswd
+   map     optional  multimap
+   account  requisite   banfile
+   session requisite authzdb
+   EOF
+
+Then we create a password file, adding two users (admin and tester):
+
+.. code-block:: bash
+   
+   touch /etc/dcache/htpasswd
+   htpasswd -bm /etc/dcache/htpasswd tester TooManySecrets
+   htpasswd -bm /etc/dcache/htpasswd admin dickerelch
+
+Now we assing uids and gids to these users and we tell them to dCache:
+
+.. code-block:: bash
+
+   touch /etc/dcache/multi-mapfile
+   cat > /etc/dcache/multi-mapfile <<EOF
+   username:tester uid:1000 gid:1000,true
+   username:admin uid:0 gid:0,true
+   EOF
+
+We also create a banfile:
+
+.. code-block:: bash
+
+   touch /etc/dcache/ban.conf
+
+and we give the authorization to the users for reading/writing the database folders:
+
+.. code-block:: bash
+
+   mkdir -p /etc/grid-security
+   touch /etc/grid-security/storage-authzdb
+   cat > /etc/grid-security/storage-authzdb <<EOF
+   version 2.1
+
+   authorize tester read-write 1000 1000 /home/tester /
+   authorize admin read-write 0 0 / /
+   EOF
+   
+Now we can try to access the database typing simply:
+
+.. code-block:: bash
+
+   chimera
+
+this will open the chimera command line.
 
 Authentication and generation of x509 certificates
 ----------------
