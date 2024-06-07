@@ -196,6 +196,21 @@ Last command will open a shell interactive, try to type ‘ls /‘ and see if it
 
 Create dCache configuration
 ----------------
+For details please have a look here: https://www.dcache.org/manuals/Book-10.0/install.shtml#creating-a-minimal-dcache-configuration
+
+Update che dCache configuration file adding the layout to be used:
+
+.. code-block:: bash
+
+   vi /etc/dcache/dcache.conf
+
+Add the following lines:
+
+.. code-block:: bash
+
+   dcache.layout = mylayout 
+   dcache.systemd.strict=false
+
 
 
 
