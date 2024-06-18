@@ -48,4 +48,28 @@ Download dCache packages from website.
 
    rpm -ivh https://www.dcache.org/old/downloads/1.9/repo/10.0/dcache-10.0.3-1.noarch.rpm
 
+Create dCache configuration
+----------------
+
+For details please have a look here: https://www.dcache.org/manuals/Book-10.0/install.shtml#creating-a-minimal-dcache-configuration
+
+Update che dCache configuration file adding the layout to be used:
+
+.. code-block:: bash
+
+   touch /etc/dcache/dcache.conf
+   cat > /etc/dcache/dcache.conf <<EOF
+   dcache.layout = mylayout 
+   dcache.systemd.strict=false
+   EOF
+
+Create the corresponding layout file in the standard dCache directory and fill it with your required dCache configuration. Since this is the pool node what you need is simply to connect the ``zookeeper`` server running in the head node and the ``DoorDomain``:
+
+.. code-block:: bash
+
+   touch /etc/dcache/layouts/mylayout.conf
+   cat > /etc/dcache/layouts/mylayout.conf <<EOF
+   <your configuration>
+   EOF
+
 
