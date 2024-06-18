@@ -69,6 +69,9 @@ Create the corresponding layout file in the standard dCache directory and fill i
 
    touch /etc/dcache/layouts/mylayout.conf
    cat > /etc/dcache/layouts/mylayout.conf <<EOF
+   dcache.enable.space-reservation = false
+   dcache.zookeeper.connection = 192.168.71.129:2181
+   ...
    <your configuration>
    EOF
 
