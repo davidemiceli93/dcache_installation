@@ -86,3 +86,68 @@ Now you can create the pools. dCache will automatically update the layout file a
    dcache pool create /netapp/vol5_D25/pool pool5 d25-poolsDomain
 
 
+Authentication and generation of x509 certificates
+----------------
+
+Now we will add to dCache the possiblity to authenticate using x509 certificates. In order to do that you will need the ``host`` certificate and key, the ``CA`` certificate and your own ``user`` certificate and key.
+
+In this example the ``host`` certificate and key was given in the ``sms`` Frascati machine, the ``user`` certificate and key are the one issued by INFN and the ``CA`` certificate can be found in the website of the corresponding CA.
+
+In order to make dCache recognize the host you should put the host key and certificate in the path ``/etc/grid-security`` and you have to change the permission settings:
+
+.. code-block:: bash
+
+   chown 644 hostcert.pem
+   chown 400 hostkey.pem
+
+Then, once you ahve the CA certificate you have to add it in the list of trusted CA which means, if your certificate is ``cacert.crt`` you need to:
+
+.. code-block:: bash
+
+   cp cacert.crt /etc/pki/ca-trust/source/anchors/
+   update-ca-trust
+
+Then, go in ``/etc/yum.repos.d`` and create the file ``EGI-trustanchors.repo`` with the following content:
+
+.. code-block:: bash
+   
+   cat > /etc/yum.repos.d/EGI-trustanchors.repo <<EOF
+   [EGI-trustanchors]
+   name=EGI-trustanchors
+   baseurl=http://repository.egi.eu/sw/production/cas/1/current/
+   gpgkey=http://repository.egi.eu/sw/production/cas/1/GPG-KEY-EUGridPMA-RPM-3
+   gpgcheck=1
+   enabled=1
+   EOF
+
+Then you populate the certificates folder in ``/etc/grid-security`` with:
+
+.. code-block:: bash
+
+   yum install ca-policy-egi-core
+
+Then:
+
+.. code-block:: bash
+
+   yum update
+   sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+   sudo yum clean all 
+   sudo yum makecache
+   yum install fetch-crl
+   fetch-crl
+
+The command ``fetch-crl`` should be repeated at least once per day.
+
+At this point you can upload your layout configuration file adding the following lines to the file:
+
+.. code-block:: bash
+
+   [doorsDomain-d25]
+   [doorsDomain-d25/webdav]
+    webdav.authn.protocol = https
+
+
+Using VOMS proxy certificates
+----------------
+
