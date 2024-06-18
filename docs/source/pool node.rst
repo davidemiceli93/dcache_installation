@@ -75,4 +75,14 @@ Create the corresponding layout file in the standard dCache directory and fill i
    <your configuration>
    EOF
 
+Now you can create the pools. dCache will automatically update the layout file adding the pool domain information.
+
+.. code-block:: bash
+
+   dcache pool create /netapp/vol1_D25/pool pool1 d25-poolsDomain 
+   dcache pool create /netapp/vol2_D25/pool pool2 d25-poolsDomain
+   dcache pool create /netapp/vol3_D25/pool pool3 d25-poolsDomain
+   dcache pool create /netapp/vol4_D25/pool pool4 d25-poolsDomain
+   dcache pool create /netapp/vol5_D25/pool pool5 d25-poolsDomain
+
 
